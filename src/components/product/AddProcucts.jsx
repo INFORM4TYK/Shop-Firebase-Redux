@@ -1,0 +1,106 @@
+import { useRef, useState } from "react";
+import { Button, FormAddContainer,AlertSection } from "./ProductStyles";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
+import { fs } from "../../config/firebase";
+import { storage } from "../../config/firebase";
+import withAuthentication from "../utils/HOC";
+import Skeleton from "react-loading-skeleton";
+const AddProcucts = ({user}) => {
+  const titleRef = useRef();
+  const priceRef = useRef();
+  const descRef = useRef();
+  const [image, setImage] = useState(null);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [uploadError, setUploadError] = useState("");
+  const [error, setError] = useState("");
+  const types = ["image/png", "image/jpeg", "image/jpg", "image/PNG"];
+  const handleProductImg = (e) => {
+    e.preventDefault();
+    let selectFile = e.target.files[0];
+    if (selectFile) {
+      if (selectFile && types.includes(selectFile.type)) {
+        setImage(selectFile);
+        setUploadError("");
+      } else {
+        setImage(null);
+        setUploadError("Wrong file extension ");
+      }
+    } else {
+      return null;
+    }
+  };
+  const handleAddProducts = async (e) => {
+    e.preventDefault();
+    const title = titleRef.current.value;
+    const description = descRef.current.value;
+    const price = priceRef.current.value;
+    const author = user;
+    console.log(author)
+    try {
+      const storageRef = ref(storage, `product-images/${image.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, image);
+
+      uploadTask.on("state_changed", (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(progress);
+      });
+
+      await new Promise((resolve, reject) => {
+        uploadTask.on("state_changed", {
+          error: (error) => reject(error),
+          complete: resolve,
+        });
+      });
+
+      const downloadURL = await getDownloadURL(storageRef);
+
+      await addDoc(collection(fs, "Products"), {
+        author,
+        title,
+        description,
+        price: Number(price),
+        url: downloadURL,
+      });
+      setSuccessMsg("Product added successfully");
+      setTimeout(() => {
+        setSuccessMsg("");
+      }, 3000);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+  return (
+    <>
+      <FormAddContainer onSubmit={handleAddProducts}>
+        <h1>Add Product</h1>
+        <label>
+          Product Title
+          <input type="text" ref={titleRef} required />
+        </label>
+        <label>
+          Product Description
+          <input type="text" ref={descRef} required />
+        </label>
+        <label>
+          Product Price
+          <input type="number" ref={priceRef} required />
+        </label>
+        <label>
+          Upload Product Image
+          <input type="file" id="file" onChange={handleProductImg} required />
+        </label>
+        <AlertSection>
+        {successMsg ? <p>{successMsg} </p> : null}
+        {uploadError ? <p>{uploadError} </p> : null}
+        {error ? <p>{error} </p> : null}
+          
+        </AlertSection>
+        <Button type="submit">Add</Button>
+      </FormAddContainer>
+    </>
+  );
+};
+
+export default withAuthentication(AddProcucts);

@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&family=Roboto:wght@100;400;700;900&display=swap");
+:root {
+  --color-white: #FFFFFF;
+  --color-grey: #B4BEC9;
+  --color-black: #222222;
+  --main-color: #159A9C;
+  --sec-color: #002333;
+  --text-dark: #011924;
+  --fs-xsmall: 0.7rem;
+  --fs-small: 0.9rem;
+  --fs-medium: 1rem;
+  --fs-big: 1.8rem;
+  --fs-large: 2.2rem;
+  --fs-xlarge: 5rem;
+  --fs-xxlarge: 6rem;
+  --ff-main: "Lato", sans-serif;
+}
+body,
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 100%;
+  font-family: var(--ff-main);
+  background-color: var(--sec-color);
+  color: var(--main-color);
+  opacity: 1;
+}
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+a,
+li {
+  list-style: none;
+  text-decoration: none;
+  color: var(--color-black);
+}
+button {
+  cursor: pointer;
+}
