@@ -2,37 +2,14 @@ import { Button } from "../product/ProductStyles";
 import { CartContainer, CartBox, Summary, MainContainer } from "./CartStyles";
 import { Link } from "react-router-dom";
 import { fs, auth } from "../../config/firebase";
-import withAuthentication from "../utils/HOC";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import Skeleton from "react-loading-skeleton";
-
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/CartSlice";
 const Cart = () => {
-  function GetCurrentUser() {
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-        if (user) {
-          getDoc(doc(fs, "users", user.uid)).then((snapshot) => {
-            setUser(snapshot.data());
-          });
-        } else {
-          setUser(null);
-        }
-      });
-
-      return () => unsubscribe();
-    }, []);
-
-    return user;
-  }
-
-  const user = GetCurrentUser();
-
+  const dispatch = useDispatch();
   const [cartProducts, setCartProducts] = useState([]);
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -40,17 +17,20 @@ const Cart = () => {
         const unsubscribeCart = onSnapshot(cartCollectionRef, (snapshot) => {
           const newCartProducts = [];
           snapshot.forEach((doc) => {
-            doc.data().items.forEach((item) => {
-              const cartItem = {
-                itemID: item.itemID,
-                price: item.price,
-                qty: item.qty,
-                TotalProductPrice: item.TotalProductPrice,
-                name: item.name,
-                url: item.url,
-              };
-              newCartProducts.push(cartItem);
-            });
+            if (doc.id === user.uid) {
+              doc.data().items.forEach((item) => {
+                const cartItem = {
+                  itemID: item.itemID,
+                  price: item.price,
+                  qty: item.qty,
+                  TotalProductPrice: item.TotalProductPrice,
+                  name: item.name,
+                  url: item.url,
+                };
+                newCartProducts.push(cartItem);
+                
+              });
+            }
           });
           setCartProducts(newCartProducts);
         });
@@ -70,7 +50,7 @@ const Cart = () => {
     (accumulator, product) => accumulator + product.qty,
     0
   );
-  console.log(totalQty);
+  dispatch(addToCart(totalQty))
   return (
     <>
       <MainContainer>
@@ -85,7 +65,7 @@ const Cart = () => {
           ) : (
             <>
               <h2>
-                ALL COST <p>{totalCost}&nbsp;USD</p>
+                ALL COST <p>{totalCost}&nbsp;USD </p>
               </h2>
               <Button>Buy</Button>
             </>
@@ -124,4 +104,4 @@ const Cart = () => {
   );
 };
 
-export default withAuthentication(Cart);
+export default Cart;

@@ -4,9 +4,11 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 import { fs } from "../../config/firebase";
 import { storage } from "../../config/firebase";
-import withAuthentication from "../utils/HOC";
 import Skeleton from "react-loading-skeleton";
-const AddProcucts = ({user}) => {
+import { useDispatch, useSelector } from "react-redux";
+const AddProcucts = () => {
+  const user = useSelector(state=> state.auth.fullName)
+  
   const titleRef = useRef();
   const priceRef = useRef();
   const descRef = useRef();
@@ -40,11 +42,8 @@ const AddProcucts = ({user}) => {
     try {
       const storageRef = ref(storage, `product-images/${image.name}`);
       const uploadTask = uploadBytesResumable(storageRef, image);
-
       uploadTask.on("state_changed", (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(progress);
+        const progress =(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       });
 
       await new Promise((resolve, reject) => {
@@ -67,8 +66,8 @@ const AddProcucts = ({user}) => {
       setTimeout(() => {
         setSuccessMsg("");
       }, 3000);
-    } catch (error) {
-      setError(error.message);
+    } catch(err) {
+      setError(err);
     }
   };
   return (
@@ -103,4 +102,4 @@ const AddProcucts = ({user}) => {
   );
 };
 
-export default withAuthentication(AddProcucts);
+export default AddProcucts;

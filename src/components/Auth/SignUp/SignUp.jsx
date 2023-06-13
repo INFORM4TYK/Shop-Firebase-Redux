@@ -53,6 +53,7 @@ const SignUp = () => {
         <label>
           Email
           <input type="text" ref={emailRef} required />
+          
         </label>
         <label>
           Password

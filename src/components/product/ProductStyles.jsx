@@ -74,7 +74,7 @@ export const ProductContainer = styled.section`
   img {
     width: clamp(100px, 100%, 150px);
     margin-bottom: 0.5rem;
-    max-height: 150px;
+    max-height: 120px;
     object-fit: contain;
     mix-blend-mode: multiply;
   }

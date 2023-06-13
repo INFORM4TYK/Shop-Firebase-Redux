@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { Nav } from "./NavbarStyles";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import withAuthentication from "../utils/HOC";
-const Navbar = ({user, totalQty}) => {
+import { useSelector } from "react-redux";
 
+const Navbar = () => {
+ const user = useSelector(state => state.auth.fullName)
+ const totalQty = useSelector(state => state.cart.totalQty)
   return (
     <Nav>
       <div>
@@ -33,4 +35,4 @@ const Navbar = ({user, totalQty}) => {
   );
 };
 
-export default withAuthentication(Navbar);
+export default Navbar;

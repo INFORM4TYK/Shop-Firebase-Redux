@@ -1,16 +1,20 @@
 import { auth } from "../../config/firebase";
 import { Button } from "../product/ProductStyles";
 import { useNavigate } from "react-router-dom";
-import withAuthentication from "../utils/HOC";
 import { Link } from "react-router-dom";
 import {DashboardContainer} from './DashboardStyles'
-const Dashboard = ({ user }) => {
+import { useDispatch,useSelector } from "react-redux";
+import { logout } from "../../store/AuthSlice";
+const Dashboard = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.fullName)
   const handleLogout = () => {
     auth
       .signOut()
       .then(() => {
         navigate("/signin");
+        dispatch(logout(user))
       })
       .catch((error) => {
         console.log("Logout errro:", error);
@@ -27,4 +31,4 @@ const Dashboard = ({ user }) => {
   );
 };
 
-export default withAuthentication(Dashboard);
+export default Dashboard;

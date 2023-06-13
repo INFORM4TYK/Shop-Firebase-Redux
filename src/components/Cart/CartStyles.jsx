@@ -14,7 +14,7 @@ export const CartContainer = styled.section`
     width: 100%;
     max-width: 200px;
     margin-bottom: 0.5rem;
-    aspect-ratio: 3/2;
+    max-height:120px;
     object-fit: contain;
     mix-blend-mode: multiply;
     user-select: none;
@@ -65,8 +65,7 @@ export const CartBox = styled.div`
     gap: 10%;
     background-color: #0000005f;
   }
-
-  @media screen and (min-width: 620px) {
+  @media screen and (min-width: 520px) {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -106,6 +105,8 @@ export const Summary = styled.section`
   width: fit-content;
   border-radius: 4px;
   margin: 2rem 1rem 1rem 1rem;
+  width:90%;
+  max-width: 400px;
   button{
     width: 150px;
   }
