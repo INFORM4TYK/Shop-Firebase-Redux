@@ -1,4 +1,4 @@
-import { useDebugValue, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, fs } from "../../config/firebase";
 import { getDocs, collection, setDoc, doc, getDoc } from "firebase/firestore";
 import { ProductContainer, Button, ProductCard } from "./ProductStyles";
@@ -8,8 +8,10 @@ import Skeleton from "react-loading-skeleton";
 import { v4 as uuidv4 } from "uuid";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../store/CartSlice";
+import { addProduct } from "../../store/CartSlice";
+import { fetchCart } from "../../store/CartSlice";
 const Product = () => {
+
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -17,6 +19,9 @@ const Product = () => {
   const handleImageLoad = () => {
     setImageLoaded(true);
   };
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
   const getProducts = async () => {
     const querySnapshot = await getDocs(collection(fs, "Products"));
     const productsData = [];
@@ -47,7 +52,6 @@ const Product = () => {
   };
 
   const addToCart2 = (product, uid) => {
-    dispatch(addToCart(1));
     if (uid !== null) {
       const cartRef = doc(fs, `cart/${uid}`);
       getDoc(cartRef)
@@ -116,6 +120,7 @@ const Product = () => {
   };
   const uid = GetUserUid();
   const handleAddToCart = (product, uid) => {
+   dispatch(addProduct(1))
     console.log("handleaddtocart");
     addToCart2(product, uid);
   };

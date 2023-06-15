@@ -5,9 +5,11 @@ import { auth, fs } from "../../../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
-
+import { useDispatch } from "react-redux";
+import { login } from "../../../store/AuthSlice";
 const SignUp = () => {
   const navigation = useNavigate();
+  const dispatch = useDispatch();
   const emailRef = useRef();
   const passwordRef = useRef();
   const fullNameRef = useRef();
@@ -30,6 +32,9 @@ const SignUp = () => {
         })
           .then(() => {
             setSuccessMsg("successfull");
+            const fullName = fullNameRef.current.value;
+            const user = credentials
+            dispatch(login({ user, fullName }));
             navigation("/account");
           })
           .catch((error) => {

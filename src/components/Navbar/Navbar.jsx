@@ -2,10 +2,14 @@ import { Link } from "react-router-dom";
 import { Nav } from "./NavbarStyles";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useSelector } from "react-redux";
+import { persistor } from "../../store/Store";
 
 const Navbar = () => {
- const user = useSelector(state => state.auth.fullName)
- const totalQty = useSelector(state => state.cart.totalQty)
+  const resetState = () => {
+    persistor.purge();
+  };
+  const user = useSelector(state => state.auth.fullName);
+  const totalQty = useSelector(state => state.cart.totalQty );
   return (
     <Nav>
       <div>
@@ -15,12 +19,12 @@ const Navbar = () => {
         <div>
           {user && user ? (
             <>
-            <Link to="/account">{user}</Link>
+              <Link to="/account">{user}</Link>
             </>
           ) : (
             <>
-            <Link to="/signin">Sign In</Link>
-            <Link to="/signup">Sign Up</Link>
+              <Link to="/signin">Sign In</Link>
+              <Link to="/signup">Sign Up</Link>
             </>
           )}
         </div>
@@ -29,6 +33,7 @@ const Navbar = () => {
             <AiOutlineShoppingCart />
             <p>{totalQty}</p>
           </Link>
+          <button onClick={resetState}>RESET</button>
         </div>
       </div>
     </Nav>

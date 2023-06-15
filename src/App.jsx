@@ -10,6 +10,7 @@ import{store,persistor} from "./store/Store";
 import { Provider } from "react-redux";
 import { PersistGate } from 'redux-persist/integration/react';
 function App() {
+  
   return (
     <>
       <BrowserRouter>
