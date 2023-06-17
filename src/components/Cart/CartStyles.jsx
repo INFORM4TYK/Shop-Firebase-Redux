@@ -14,7 +14,7 @@ export const CartContainer = styled.section`
     width: 100%;
     max-width: 200px;
     margin-bottom: 0.5rem;
-    max-height:120px;
+    max-height: 120px;
     object-fit: contain;
     mix-blend-mode: multiply;
     user-select: none;
@@ -96,28 +96,37 @@ export const CartBox = styled.div`
 `;
 export const Summary = styled.section`
   background-color: #fdf8f6;
-  text-align:center;
+  text-align: center;
   padding: 2rem 1rem;
   gap: 2rem;
-  display:flex;
+  display: flex;
   justify-content: space-evenly;
   align-items: center;
   width: fit-content;
   border-radius: 4px;
   margin: 2rem 1rem 1rem 1rem;
-  width:90%;
+  width: 90%;
   max-width: 400px;
-  button{
+  button {
     width: 150px;
   }
   h2 p {
     margin-top: 1rem;
-    font-size: var(--fs-medium)
+    font-size: var(--fs-medium);
   }
-`
+`;
 export const MainContainer = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-`
+`;
+export const QtySection = styled.section`
+  display: grid;
+  section:nth-child(2) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+`;
