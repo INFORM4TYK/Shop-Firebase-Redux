@@ -11,11 +11,12 @@ export const CartContainer = styled.section`
     text-align: center;
   }
   img {
-    width: 100%;
-    max-width: 200px;
+    width: clamp(100px, 100%, 150px);
+    margin: .5rem 0;
+    aspect-ratio: 1/1;
+    max-height: 150px;
+    mix-blend-mode: multiply;
     margin-bottom: 0.5rem;
-    max-height: 120px;
-    object-fit: contain;
     mix-blend-mode: multiply;
     user-select: none;
     pointer-events: none;
@@ -127,6 +128,23 @@ export const QtySection = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    gap:.3rem;
+    p{
+      user-select: none;
+    }
   }
 `;
+export const NotUserSection = styled.section`
+display: flex;
+align-items: center;  
+justify-content: center;
+flex-direction: column;
+text-align: center;
+gap: 2rem;
+a{
+  font-weight: bolder;
+  font-size: var(--fs-big);
+  color: var(--color-main);
+  text-decoration: underline; 
+}
+`

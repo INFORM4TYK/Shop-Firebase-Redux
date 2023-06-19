@@ -1,15 +1,31 @@
 import { Link } from "react-router-dom";
 import { Nav } from "./NavbarStyles";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { persistor } from "../../store/Store";
-
+import { logout } from "../../store/AuthSlice";
+import { auth } from "../../config/firebase";
+import { useNavigate } from "react-router-dom";
+import { clearCart } from "../../store/CartSlice";
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.fullName);
+  const totalQty = useSelector((state) => state.cart.totalQty);
+  const navigate = useNavigate();
   const resetState = () => {
-    persistor.purge();
+    auth
+      .signOut()
+      .then(() => {
+        persistor.purge();
+        navigate("/signin");
+        dispatch(logout(user));
+        dispatch(clearCart());
+        window.location.reload(true);
+      })
+      .catch((error) => {
+        console.log("Logout errro:", error);
+      });
   };
-  const user = useSelector(state => state.auth.fullName);
-  const totalQty = useSelector(state => state.cart.totalQty );
   return (
     <Nav>
       <div>
@@ -33,7 +49,7 @@ const Navbar = () => {
             <AiOutlineShoppingCart />
             <p>{totalQty}</p>
           </Link>
-          <button onClick={resetState}>RESET</button>
+          <button onClick={() => resetState()}>RESET</button>
         </div>
       </div>
     </Nav>

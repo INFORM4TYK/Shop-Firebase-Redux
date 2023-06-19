@@ -67,42 +67,46 @@ export const FormAddContainer = styled.form`
   }
 `;
 export const ProductContainer = styled.section`
+
   color: black;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
   img {
     width: clamp(100px, 100%, 150px);
-    margin-bottom: 0.5rem;
-    max-height: 120px;
-    object-fit: contain;
+    margin: 0.5rem 0;
+    aspect-ratio: 1/1;
+    max-height: 150px;
     mix-blend-mode: multiply;
+  }
+  @media (max-width: 580px) {
+    justify-content: center;
   }
 `;
 
-export const ProductCard = styled.div`
+export const ProductCard = styled.article`
   position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
   background-color: #fdf8f6;
   box-shadow: 0px 0px 20px -9px #fdf8f6;
   border-radius: 4px;
+  overflow: hidden;
   margin: 2rem 1rem;
   padding: 1rem;
-  height: 350px;
+  height: 400px;
   min-width: calc((100% - 8rem) / 4);
   max-width: calc((100% - 8rem) / 4);
   font-size: var(--fs-small);
   p {
+    height: 18px;
+    width: 140px;
     overflow: hidden;
+    text-align: center;
     text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
   }
-
   div:nth-child(2) {
     display: flex;
     flex-direction: column;
@@ -117,7 +121,8 @@ export const ProductCard = styled.div`
     min-width: max(calc((100% - 4rem) / 2));
   }
   @media (max-width: 580px) {
-    min-width: calc((100% - 2rem) / 1);
+    max-width: 300px;
+    width: 100%;
     display: grid;
     place-items: center;
   }
@@ -147,8 +152,51 @@ export const Button = styled.button`
     color: inherit;
     width: 100%;
   }
-  &:hover,
-  &:focus {
+  &:hover {
     background-color: var(--text-dark);
+  }
+`;
+export const SortSection = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 1rem 1rem 0 1rem;
+  gap: clamp(0.2rem, 2vw, 2rem);
+  button {
+    padding: 0.1rem;
+  }
+  @media screen and (max-width: 480px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 1rem 1rem 0 1rem;
+    gap: 0.5rem;
+    place-items: start center;
+    button {
+      width: 100%;
+      height: 50px;
+    }
+  }
+`;
+export const InputContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: 1s ease;
+`;
+
+export const Input = styled.input`
+  padding: 0.5rem;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+export const RangeSection = styled.section`
+  width: 100%;
+  max-width: 150px;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  button {
+    margin: .5rem 0;
   }
 `;

@@ -10,8 +10,11 @@ export const Nav = styled.nav`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  
   a:nth-child(2) {
     margin-left: 1rem;
+    padding-left: 1rem;
+    border-left: 1px solid #ffffff;
   }
   & > div,
   * {
