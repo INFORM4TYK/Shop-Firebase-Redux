@@ -10,7 +10,12 @@ export const Nav = styled.nav`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  
+  button{
+    color: var(--sec-color)
+  }
+  button:hover{
+    color: var(--main-color)
+  }
   a:nth-child(2) {
     margin-left: 1rem;
     padding-left: 1rem;

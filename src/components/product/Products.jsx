@@ -1,16 +1,24 @@
 import { useEffect, useState } from "react";
 import { auth, fs } from "../../config/firebase";
 import { setDoc, doc, getDoc } from "firebase/firestore";
-import { ProductContainer, Button, ProductCard } from "./ProductStyles";
+import { Button } from "./ProductStyles";
 import { onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { v4 as uuidv4 } from "uuid";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../../store/CartSlice";
-
-const Product = ({ products, showMyProducts, error, setImageLoaded }) => {
+import IndividualProduct from "./IndividualProduct";
+const Products = ({
+  products,
+  showMyProducts,
+  error,
+  setImageLoaded,
+  productStatus,
+  setProductStatus,
+  user,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleImageLoad = () => {
@@ -97,7 +105,9 @@ const Product = ({ products, showMyProducts, error, setImageLoaded }) => {
     dispatch(addProduct(1));
     addToCart2(product, uid);
   };
-
+  if (products.length > 0) {
+    setProductStatus(false);
+  }
   return (
     <>
       <h1
@@ -108,32 +118,28 @@ const Product = ({ products, showMyProducts, error, setImageLoaded }) => {
         }}
       >
         {showMyProducts ? "My Products" : "All Products"}
+        {productStatus ? (
+          <>
+            <h5 style={{ marginTop: "1rem" }}>You don't have any products</h5>
+            <Link to="/add-products">
+              <Button>Click here to add products</Button>
+            </Link>
+          </>
+        ) : null}
       </h1>
       {error ? (
         <h1 style={{ textAlign: "center" }}>No Products Found</h1>
       ) : null}
-      <ProductContainer>
-        {!error &&
-          products.map((product, index) => {
-            const { title, url, price, description, author } = product;
-            return (
-              <ProductCard key={index}>
-                <h3>{title}</h3>
-                <div>
-                  <img src={url} alt="product" onLoad={handleImageLoad} />
-                  <p>{description}</p>
-                  <p>{price} USD</p>
-                  <Button onClick={() => handleAddToCart(product, uid)}>
-                    Add To Cart
-                  </Button>
-                  <h4>Seller: {author ? author : "Anonymous"}</h4>
-                </div>
-              </ProductCard>
-            );
-          })}
-      </ProductContainer>
+      <IndividualProduct
+        user={user}
+        error={error}
+        products={products}
+        handleImageLoad={handleImageLoad}
+        uid={uid}
+        handleAddToCart={handleAddToCart}
+      />
     </>
   );
 };
 
-export default Product;
+export default Products;

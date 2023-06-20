@@ -156,3 +156,13 @@ export const Button = styled.button`
     background-color: var(--text-dark);
   }
 `;
+export const RowSection = styled.section`
+ display: flex;
+ flex-direction: row;
+ column-gap: 1rem ;
+& > *{
+  margin-top: 1rem;
+  font-weight: normal;
+  font-size: var(--fs-small);
+}
+`

@@ -8,6 +8,7 @@ import {
 } from "./SortStyles";
 import { Button } from "../product/ProductStyles";
 import { useNavigate } from "react-router-dom";
+
 const Sort = ({
   user,
   originalProducts,
@@ -15,25 +16,34 @@ const Sort = ({
   setError,
   setShowMyProducts,
   showMyProducts,
+  products,
+  setProductStatus
 }) => {
   const navigate = useNavigate();
 
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+
   const [range, setRange] = useState(false);
   const handleShowMyProducts = () => {
     setShowMyProducts(true);
+  
     if (user) {
-      setProducts(
-        originalProducts.filter((product) => product.author === user)
+      const filteredProducts = originalProducts.filter(
+        (product) => product.author === user
       );
+      setProducts(filteredProducts);
+
+      if (filteredProducts.length === 0) {
+        setProductStatus(true);
+      }
     } else {
       navigate("/signin");
     }
   };
   const handleShowAllProducts = () => {
     setShowMyProducts(false);
-    setProducts(originalProducts.filter((product) => product.author !== user));
+    setProducts(originalProducts);
   };
 
   const showRangeItems = () => {
@@ -42,11 +52,15 @@ const Sort = ({
 
     const filteredProducts = originalProducts.filter((product) => {
       if (maxPriceValue && minPriceValue) {
-        return product.price >= minPriceValue && product.price <= maxPriceValue;
+        return (
+          product.price >= minPriceValue &&
+          product.price <= maxPriceValue &&
+          product.author !== user
+        );
       } else if (maxPriceValue && !minPrice) {
-        return product.price <= maxPriceValue;
+        return product.price <= maxPriceValue && product.author !== user;
       } else if (minPriceValue && !maxPrice) {
-        return product.price >= minPriceValue;
+        return product.price >= minPriceValue && product.author !== user;
       }
       return true;
     });

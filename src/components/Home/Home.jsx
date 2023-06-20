@@ -1,4 +1,4 @@
-import Product from "../product/Product";
+import Products from "../product/Products";
 import Sort from "../SortSection/SortSection";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
@@ -13,6 +13,7 @@ const Home = () => {
   const [error, setError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showMyProducts, setShowMyProducts] = useState(false);
+  const [productStatus, setProductStatus] = useState(false);
   const getProducts = async () => {
     const querySnapshot = await getDocs(collection(fs, "Products"));
     const productsData = [];
@@ -31,6 +32,7 @@ const Home = () => {
   useEffect(() => {
     getProducts();
   }, []);
+
   return (
     <>
       <Sort
@@ -40,12 +42,18 @@ const Home = () => {
         setError={setError}
         setShowMyProducts={setShowMyProducts}
         showMyProducts={showMyProducts}
+        products={products}
+        setProductStatus={setProductStatus}
       />
-      <Product
+      <Products
+      setProductStatus={setProductStatus}
+        user={user}
         products={products}
         showMyProducts={showMyProducts}
         error={error}
         setImageLoaded={setImageLoaded}
+        productStatus={productStatus}
+        
       />
     </>
   );

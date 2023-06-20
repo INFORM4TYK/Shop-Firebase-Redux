@@ -7,6 +7,7 @@ import { logout } from "../../store/AuthSlice";
 import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../../store/CartSlice";
+import { Button } from "../product/ProductStyles";
 const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.fullName);
@@ -16,11 +17,9 @@ const Navbar = () => {
     auth
       .signOut()
       .then(() => {
-        persistor.purge();
         navigate("/signin");
         dispatch(logout(user));
         dispatch(clearCart());
-        window.location.reload(true);
       })
       .catch((error) => {
         console.log("Logout errro:", error);
@@ -49,7 +48,7 @@ const Navbar = () => {
             <AiOutlineShoppingCart />
             <p>{totalQty}</p>
           </Link>
-          <button onClick={() => resetState()}>RESET</button>
+          {user && <Button onClick={() => resetState()}>Log Out</Button>}
         </div>
       </div>
     </Nav>
