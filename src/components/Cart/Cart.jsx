@@ -148,7 +148,7 @@ const Cart = () => {
         <h1>
           Go to login page to see your cart
         </h1>
-          <Link to="/signin">Log In</Link>
+          <Link to="/signin"><h5 style={{color:"white"}}>Log In</h5></Link>
         </NotUserSection>
       )}
     </>

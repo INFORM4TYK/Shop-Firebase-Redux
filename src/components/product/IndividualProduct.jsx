@@ -1,12 +1,24 @@
-import { ProductContainer, ProductCard, Button,RowSection} from "./ProductStyles";
+import Skeleton from "react-loading-skeleton";
+import {
+  ProductContainer,
+  ProductCard,
+  Button,
+  RowSection,
+} from "./ProductStyles";
 const IndividualProduct = ({
   error,
   products,
-  handleImageLoad,
   handleAddToCart,
   uid,
   user,
+  imageLoaded,
+  setImageLoaded,
 }) => {
+  const handleImageLoad = () => {
+    // setImageLoaded(true);
+  };
+
+  console.log(imageLoaded);
   return (
     <ProductContainer>
       {!error &&
@@ -16,27 +28,34 @@ const IndividualProduct = ({
             <ProductCard key={index}>
               <h3>{title}</h3>
               <div>
-                <img src={url} alt="product" onLoad={handleImageLoad} />
+                <img
+                  src={url}
+                  alt="product"
+                  onLoad={handleImageLoad}
+                  // style={{ display: imageLoaded ? "block" : "none" }}
+                  loading="lazy"
+                />
+                {/* {!imageLoaded && <Skeleton width={150} height={150} />} */}
+
                 <p>{description}</p>
                 <p>{price} USD</p>
                 <RowSection>
-                <Button onClick={() => handleAddToCart(product, uid)}>
-                  Add To Cart
-                </Button>
-                {product.author === user &&
-                 <Button onClick={() => handleAddToCart(product, uid)}>
-                  Delete
-                </Button>
-                }
+                  {product.author === user ? (
+                    <Button onClick={() => handleAddToCart(product, uid)}>
+                      Delete
+                    </Button>
+                  ) : (
+                    <Button>Add To Cart</Button>
+                  )}
                 </RowSection>
                 <RowSection>
-                    <h4>
-                  {author === user
-                    ? "Its Your Product"
-                    : author
-                    ? `Seller: ${author}`
-                    : "Seller: Anonymous"}
-                    </h4>
+                  <h4>
+                    {author === user
+                      ? "Its Your Product"
+                      : author
+                      ? `Seller: ${author}`
+                      : "Seller: Anonymous"}
+                  </h4>
                 </RowSection>
               </div>
             </ProductCard>

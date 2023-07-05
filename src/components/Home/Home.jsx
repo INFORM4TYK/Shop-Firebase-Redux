@@ -14,22 +14,21 @@ const Home = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showMyProducts, setShowMyProducts] = useState(false);
   const [productStatus, setProductStatus] = useState(false);
-  const getProducts = async () => {
-    const querySnapshot = await getDocs(collection(fs, "Products"));
-    const productsData = [];
-    querySnapshot.forEach((doc) => {
-      const product = doc.data();
-      productsData.push(product);
-    });
-    setProducts(productsData);
-    setOriginalProducts(productsData);
-  };
 
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
-
   useEffect(() => {
+    const getProducts = async () => {
+      const querySnapshot = await getDocs(collection(fs, "Products"));
+      const productsData = [];
+      querySnapshot.forEach((doc) => {
+        const product = doc.data();
+        productsData.push(product);
+      });
+      setProducts(productsData);
+      setOriginalProducts(productsData);
+    };
     getProducts();
   }, []);
 
@@ -46,14 +45,14 @@ const Home = () => {
         setProductStatus={setProductStatus}
       />
       <Products
-      setProductStatus={setProductStatus}
+        imageLoaded={imageLoaded}
+        setProductStatus={setProductStatus}
         user={user}
         products={products}
         showMyProducts={showMyProducts}
         error={error}
         setImageLoaded={setImageLoaded}
         productStatus={productStatus}
-        
       />
     </>
   );

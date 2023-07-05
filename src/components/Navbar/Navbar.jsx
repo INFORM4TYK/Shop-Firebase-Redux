@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { Nav } from "./NavbarStyles";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-import { persistor } from "../../store/Store";
 import { logout } from "../../store/AuthSlice";
 import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +16,7 @@ const Navbar = () => {
     auth
       .signOut()
       .then(() => {
-        navigate("/signin");
+        navigate("/");
         dispatch(logout(user));
         dispatch(clearCart());
       })

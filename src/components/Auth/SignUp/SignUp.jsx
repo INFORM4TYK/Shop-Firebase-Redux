@@ -47,13 +47,22 @@ const SignUp = () => {
 
     console.log(emailRef.current.value, passwordRef.current.value);
   };
+  const handleInputChange = () => {
+    let inputValue = fullNameRef.current.value;
+    const words = inputValue.split(" ");
+    const capitalizedWords = words.map((word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    });
+    const capitalizedValue = capitalizedWords.join(" ");
+    fullNameRef.current.value = capitalizedValue;
+  };
   return (
     <Container onSubmit={handleSignUp}>
       <FormContainer action="">
         <h2>Register</h2>
         <label>
           Full Name
-          <input type="text" ref={fullNameRef} required />
+          <input type="text" ref={fullNameRef} required onChange={handleInputChange}/>
         </label>
         <label>
           Email

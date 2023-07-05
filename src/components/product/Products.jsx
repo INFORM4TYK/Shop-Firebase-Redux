@@ -4,7 +4,6 @@ import { setDoc, doc, getDoc } from "firebase/firestore";
 import { Button } from "./ProductStyles";
 import { onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
-import Skeleton from "react-loading-skeleton";
 import { v4 as uuidv4 } from "uuid";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useDispatch } from "react-redux";
@@ -18,12 +17,11 @@ const Products = ({
   productStatus,
   setProductStatus,
   user,
+  imageLoaded
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-  };
+   
   const GetUserUid = () => {
     const [uid, setUid] = useState(null);
     useEffect(() => {
@@ -117,7 +115,7 @@ const Products = ({
           marginTop: "1.5rem",
         }}
       >
-        {showMyProducts ? "My Products" : "All Products"}
+        {!productStatus ? showMyProducts ? "My Products" : "All Products" : null}
         {productStatus ? (
           <>
             <h5 style={{ marginTop: "1rem" }}>You don't have any products</h5>
@@ -134,7 +132,9 @@ const Products = ({
         user={user}
         error={error}
         products={products}
-        handleImageLoad={handleImageLoad}
+        imageLoaded={imageLoaded}
+        setImageLoaded={setImageLoaded}
+        // handleImageLoad={handleImageLoad}
         uid={uid}
         handleAddToCart={handleAddToCart}
       />

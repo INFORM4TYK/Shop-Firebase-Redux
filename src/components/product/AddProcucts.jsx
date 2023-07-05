@@ -1,17 +1,17 @@
 import { useRef, useState } from "react";
-import { Button, FormAddContainer,AlertSection } from "./ProductStyles";
+import { Button, FormAddContainer, AlertSection } from "./ProductStyles";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 import { fs } from "../../config/firebase";
 import { storage } from "../../config/firebase";
-import Skeleton from "react-loading-skeleton";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 const AddProcucts = () => {
-  const user = useSelector(state=> state.auth.fullName)
-  
+  const user = useSelector((state) => state.auth.fullName);
+
   const titleRef = useRef();
   const priceRef = useRef();
   const descRef = useRef();
+  const fileInputRef = useRef(null);
   const [image, setImage] = useState(null);
   const [successMsg, setSuccessMsg] = useState("");
   const [uploadError, setUploadError] = useState("");
@@ -38,14 +38,13 @@ const AddProcucts = () => {
     const description = descRef.current.value;
     const price = priceRef.current.value;
     const author = user;
-    console.log(author)
     try {
       const storageRef = ref(storage, `product-images/${image.name}`);
       const uploadTask = uploadBytesResumable(storageRef, image);
       uploadTask.on("state_changed", (snapshot) => {
-        const progress =(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       });
-
       await new Promise((resolve, reject) => {
         uploadTask.on("state_changed", {
           error: (error) => reject(error),
@@ -63,10 +62,14 @@ const AddProcucts = () => {
         url: downloadURL,
       });
       setSuccessMsg("Product added successfully");
+      titleRef.current.value = "";
+      descRef.current.value = "";
+      priceRef.current.value = "";
+      fileInputRef.current.value = "";
       setTimeout(() => {
         setSuccessMsg("");
       }, 3000);
-    } catch(err) {
+    } catch (err) {
       setError(err);
     }
   };
@@ -88,13 +91,12 @@ const AddProcucts = () => {
         </label>
         <label>
           Upload Product Image
-          <input type="file" id="file" onChange={handleProductImg} required />
+          <input type="file" id="file" ref={fileInputRef} onChange={handleProductImg} required />
         </label>
         <AlertSection>
-        {successMsg ? <p>{successMsg} </p> : null}
-        {uploadError ? <p>{uploadError} </p> : null}
-        {error ? <p>{error} </p> : null}
-          
+          {successMsg ? <p>{successMsg} </p> : null}
+          {uploadError ? <p>{uploadError} </p> : null}
+          {error ? <p>{error} </p> : null}
         </AlertSection>
         <Button type="submit">Add</Button>
       </FormAddContainer>
