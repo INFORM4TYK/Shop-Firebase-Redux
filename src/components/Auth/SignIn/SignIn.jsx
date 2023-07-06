@@ -26,7 +26,6 @@ const SignIn = () => {
       .then((userCredentials) => {
         setSignIn(true);
         const user = userCredentials.user;
-        console.log(user)
         getDoc(doc(fs, "user", user.uid))
         .then((snapshot) => {
           if (snapshot.exists()) {
@@ -43,7 +42,7 @@ const SignIn = () => {
         setError(error.code.replace("auth/", ""));
       });
   };
-  console.log(signIn);
+  // console.log(signIn);
  useEffect(()=>{
   if(isLoggedIn){
     navigate('/')

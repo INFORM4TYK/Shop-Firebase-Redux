@@ -1,10 +1,12 @@
-import Skeleton from "react-loading-skeleton";
+import { addDoc,collection } from "firebase/firestore";
+import { fs } from "../../config/firebase";
 import {
   ProductContainer,
   ProductCard,
   Button,
   RowSection,
 } from "./ProductStyles";
+
 const IndividualProduct = ({
   error,
   products,
@@ -18,7 +20,12 @@ const IndividualProduct = ({
     // setImageLoaded(true);
   };
 
+  const handleDelete = async (product) => {
+    console.log(product)
+  };
+
   console.log(imageLoaded);
+
   return (
     <ProductContainer>
       {!error &&
@@ -41,11 +48,13 @@ const IndividualProduct = ({
                 <p>{price} USD</p>
                 <RowSection>
                   {product.author === user ? (
-                    <Button onClick={() => handleAddToCart(product, uid)}>
+                     <Button onClick={() => handleDelete(product)}>
                       Delete
                     </Button>
                   ) : (
-                    <Button>Add To Cart</Button>
+                    <Button onClick={() => handleAddToCart(product, uid)}>
+                      Add To Cart
+                    </Button>
                   )}
                 </RowSection>
                 <RowSection>

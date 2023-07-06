@@ -102,6 +102,7 @@ const Products = ({
   const handleAddToCart = (product, uid) => {
     dispatch(addProduct(1));
     addToCart2(product, uid);
+    console.log("add to cart")
   };
   if (products.length > 0) {
     setProductStatus(false);

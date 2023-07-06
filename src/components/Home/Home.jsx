@@ -24,7 +24,9 @@ const Home = () => {
       const productsData = [];
       querySnapshot.forEach((doc) => {
         const product = doc.data();
-        productsData.push(product);
+        const productId = doc.id;
+        const productWithId = { ...product, id: productId };
+        productsData.push(productWithId);
       });
       setProducts(productsData);
       setOriginalProducts(productsData);
