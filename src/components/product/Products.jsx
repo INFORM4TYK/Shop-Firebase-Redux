@@ -17,7 +17,8 @@ const Products = ({
   productStatus,
   setProductStatus,
   user,
-  imageLoaded
+  imageLoaded,
+  getProducts
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -130,6 +131,7 @@ const Products = ({
         <h1 style={{ textAlign: "center" }}>No Products Found</h1>
       ) : null}
       <IndividualProduct
+      getProducts={getProducts}
         user={user}
         error={error}
         products={products}

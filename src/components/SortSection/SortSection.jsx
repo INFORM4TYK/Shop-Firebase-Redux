@@ -17,7 +17,7 @@ const Sort = ({
   setShowMyProducts,
   showMyProducts,
   products,
-  setProductStatus
+  setProductStatus,
 }) => {
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const Sort = ({
   const [range, setRange] = useState(false);
   const handleShowMyProducts = () => {
     setShowMyProducts(true);
-  
+
     if (user) {
       const filteredProducts = originalProducts.filter(
         (product) => product.author === user
@@ -51,18 +51,34 @@ const Sort = ({
     const maxPriceValue = parseInt(maxPrice);
 
     const filteredProducts = originalProducts.filter((product) => {
-      if (maxPriceValue && minPriceValue) {
-        return (
-          product.price >= minPriceValue &&
-          product.price <= maxPriceValue &&
-          product.author !== user
-        );
-      } else if (maxPriceValue && !minPrice) {
-        return product.price <= maxPriceValue && product.author !== user;
-      } else if (minPriceValue && !maxPrice) {
-        return product.price >= minPriceValue && product.author !== user;
+      if(showMyProducts) {
+        if (maxPriceValue && minPriceValue) {
+          return (
+            product.price >= minPriceValue &&
+            product.price <= maxPriceValue &&
+            product.author === user
+          );
+        } else if (maxPriceValue && !minPrice) {
+          return product.price <= maxPriceValue && product.author === user;
+        } else if (minPriceValue && !maxPrice) {
+          return product.price >= minPriceValue && product.author === user;
+        }
+        return true;
+      }else{
+        if (maxPriceValue && minPriceValue) {
+          return (
+            product.price >= minPriceValue &&
+            product.price <= maxPriceValue &&
+            product.author !== user
+          );
+        } else if (maxPriceValue && !minPrice) {
+          return product.price <= maxPriceValue && product.author !== user;
+        } else if (minPriceValue && !maxPrice) {
+          return product.price >= minPriceValue && product.author !== user;
+        }
+        return true;
       }
-      return true;
+      
     });
     setProducts(
       filteredProducts.length > 0 ? filteredProducts : originalProducts
@@ -73,7 +89,19 @@ const Sort = ({
     setMaxPrice("");
     setMinPrice("");
     setError(false);
+    const userProducts = Object.values(originalProducts).filter(
+      (product) => product.author === user
+    );
+    if(showMyProducts)
+    setProducts(userProducts);
+    else
     setProducts(originalProducts);
+  };
+  const sortProductsByPrice = (direction) => {
+    const productsArray = Object.values(originalProducts);
+    productsArray.sort((a, b) => direction === "asc" ? a.price - b.price : b.price - a.price);
+    setProducts(productsArray);
+    setShowMyProducts(false)
   };
   return (
     <SortSection>
@@ -85,10 +113,10 @@ const Sort = ({
         )}
       </RangeSection>
       <RangeSection>
-        <Button>SOMETHING</Button>
+        <Button onClick={() => sortProductsByPrice("asc")}>Lowest Price</Button>
       </RangeSection>
       <RangeSection>
-        <Button>SOMETHING</Button>
+        <Button onClick={() => sortProductsByPrice("desc")}>Highest Price</Button>
       </RangeSection>
       <RangeSection>
         <Button onClick={() => setRange(!range)}>

@@ -3,7 +3,7 @@ import Sort from "../SortSection/SortSection";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { fetchCart } from "../../store/CartSlice";
-import { getDocs, collection } from "firebase/firestore";
+import { collection,onSnapshot } from "firebase/firestore";
 import { fs } from "../../config/firebase";
 const Home = () => {
   const dispatch = useDispatch();
@@ -18,11 +18,11 @@ const Home = () => {
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
-  useEffect(() => {
-    const getProducts = async () => {
-      const querySnapshot = await getDocs(collection(fs, "Products"));
+  const getProducts = () => {
+    const productsCollectionRef = collection(fs, "Products");
+    onSnapshot(productsCollectionRef, (snapshot) => {
       const productsData = [];
-      querySnapshot.forEach((doc) => {
+      snapshot.forEach((doc) => {
         const product = doc.data();
         const productId = doc.id;
         const productWithId = { ...product, id: productId };
@@ -30,23 +30,26 @@ const Home = () => {
       });
       setProducts(productsData);
       setOriginalProducts(productsData);
-    };
+    });
+  };
+  useEffect(() => {
     getProducts();
   }, []);
 
   return (
     <>
       <Sort
+        showMyProducts={showMyProducts}
         setProducts={setProducts}
         originalProducts={originalProducts}
         user={user}
         setError={setError}
         setShowMyProducts={setShowMyProducts}
-        showMyProducts={showMyProducts}
         products={products}
         setProductStatus={setProductStatus}
       />
       <Products
+        getProducts={getProducts}
         imageLoaded={imageLoaded}
         setProductStatus={setProductStatus}
         user={user}
