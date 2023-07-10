@@ -90,8 +90,8 @@ export const ProductCard = styled.article`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #fdf8f6;
-  box-shadow: 0px 0px 20px -9px #fdf8f6;
+  background-color: var(--color-darker-white);
+  box-shadow: 0px 0px 20px -9px var(--color-darker-white);
   border-radius: 4px;
   overflow: hidden;
   margin: 2rem 1rem;
@@ -141,7 +141,7 @@ export const Button = styled.button`
   height: 40px;
   margin: 0;
   outline: none;
-  padding: 10px 16px;
+  padding: 0 16px;
   position: relative;
   text-align: center;
   text-decoration: none;
@@ -152,7 +152,7 @@ export const Button = styled.button`
     color: inherit;
     width: 100%;
   }
-  &:hover {
+  &:hover,&:active {
     background-color: var(--text-dark);
   }
 `;

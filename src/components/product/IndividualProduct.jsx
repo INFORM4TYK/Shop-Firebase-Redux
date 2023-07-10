@@ -1,4 +1,4 @@
-import { addDoc,collection,doc,updateDoc,deleteDoc } from "firebase/firestore";
+import { doc,deleteDoc } from "firebase/firestore";
 import { fs } from "../../config/firebase";
 import {
   ProductContainer,

@@ -9,6 +9,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../../store/CartSlice";
 import IndividualProduct from "./IndividualProduct";
+import AddToCart from "../Modals/AddToCart";
 const Products = ({
   products,
   showMyProducts,
@@ -18,11 +19,12 @@ const Products = ({
   setProductStatus,
   user,
   imageLoaded,
-  getProducts
+  getProducts,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-   
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalProduct, setModalProduct] = useState([]);
   const GetUserUid = () => {
     const [uid, setUid] = useState(null);
     useEffect(() => {
@@ -103,11 +105,15 @@ const Products = ({
   const handleAddToCart = (product, uid) => {
     dispatch(addProduct(1));
     addToCart2(product, uid);
-    console.log("add to cart")
+    setModalProduct(product)
+    setIsModalOpen(true)
+    console.log("add to cart");
+    console.log("is modal open :" + isModalOpen)
   };
   if (products.length > 0) {
     setProductStatus(false);
   }
+
   return (
     <>
       <h1
@@ -117,7 +123,11 @@ const Products = ({
           marginTop: "1.5rem",
         }}
       >
-        {!productStatus ? showMyProducts ? "My Products" : "All Products" : null}
+        {!productStatus
+          ? showMyProducts
+            ? "My Products"
+            : "All Products"
+          : null}
         {productStatus ? (
           <>
             <h5 style={{ marginTop: "1rem" }}>You don't have any products</h5>
@@ -131,7 +141,7 @@ const Products = ({
         <h1 style={{ textAlign: "center" }}>No Products Found</h1>
       ) : null}
       <IndividualProduct
-      getProducts={getProducts}
+        getProducts={getProducts}
         user={user}
         error={error}
         products={products}
@@ -141,6 +151,7 @@ const Products = ({
         uid={uid}
         handleAddToCart={handleAddToCart}
       />
+      <AddToCart isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalProduct={modalProduct} products={products} />
     </>
   );
 };
