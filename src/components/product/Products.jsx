@@ -9,7 +9,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../../store/CartSlice";
 import IndividualProduct from "./IndividualProduct";
-import AddToCart from "../Modals/AddToCart";
+import AddToCart from "../Modals/AddModal";
+import DeleteFromCart from "../Modals/DeleteModal";
 const Products = ({
   products,
   showMyProducts,
@@ -152,6 +153,7 @@ const Products = ({
         handleAddToCart={handleAddToCart}
       />
       <AddToCart isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalProduct={modalProduct} products={products} />
+      
     </>
   );
 };

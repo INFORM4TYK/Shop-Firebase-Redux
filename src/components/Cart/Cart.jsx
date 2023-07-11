@@ -1,3 +1,4 @@
+import { React } from "react";
 import { Button } from "../product/ProductStyles";
 import {
   CartContainer,
@@ -5,82 +6,38 @@ import {
   Summary,
   MainContainer,
   QtySection,
-  NotUserSection
+  NotUserSection,
 } from "./CartStyles";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Skeleton from "react-loading-skeleton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchCart } from "../../store/CartSlice";
 import { AiOutlinePlusSquare, AiOutlineMinusSquare } from "react-icons/ai";
-import { collection, doc, updateDoc } from "firebase/firestore";
-import { fs } from "../../config/firebase";
+import { handleIncrease, handleDecrease } from "../utils/IncDecCart";
+import DeleteFromCart from "../Modals/DeleteModal";
+
 const Cart = () => {
   const dispatch = useDispatch();
   const {
     data: cartData,
     error,
-    loading,
     totalCost,
   } = useSelector((state) => state.cart);
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
   const user = useSelector((state) => state.auth.user);
-
-  const updateCartData = (ItemID, updateFn) => {
-    const productIndex = cartData.findIndex(
-      (product) => product.itemID === ItemID
-    );
-
-    if (productIndex >= 0) {
-      const updatedCartData = cartData
-        .map((product, index) => {
-          if (index === productIndex) {
-            return updateFn({ ...product });
-          }
-          return product;
-        })
-        .filter((product) => product.qty > 0);
-
-      if (user) {
-        const cartRef = doc(collection(fs, "cart"), user.uid);
-        updateDoc(cartRef, { items: updatedCartData })
-          .then(() => {
-            console.log("Updated cart");
-          })
-          .catch((error) => {
-            console.log("Error updating cart:", error);
-          });
-      } else {
-        console.log("User is not logged in to update the cart");
-      }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalProduct, setModalProduct] = useState([]);
+  const handleOpenModal = (itemID, cartData, user, qty) => {
+    if (qty === 1) {
+      setIsModalOpen(true);
+      setModalProduct(itemID)
+    } else {
+      handleDecrease(itemID, cartData, user);
     }
   };
-
-  const handleIncrease = (ItemID) => {
-    updateCartData(ItemID, (product) => {
-      product.qty += 1;
-      product.TotalProductPrice = product.qty * product.price;
-      return product;
-    });
-  };
-
-  const handleDecrease = (ItemID) => {
-    updateCartData(ItemID, (product) => {
-      product.qty -= 1;
-      product.TotalProductPrice = product.qty * product.price;
-      return product;
-    });
-  };
-
-  const handleDelete = (ItemID) => {
-    updateCartData(ItemID, (product) => {
-      product.qty = 0;
-      return product;
-    });
-  };
-
   return (
     <>
       {user ? (
@@ -126,15 +83,24 @@ const Cart = () => {
                         <b>Amount:</b>
                         <section>
                           <AiOutlinePlusSquare
-                            onClick={() => handleIncrease(itemID)}
+                            onClick={() =>
+                              handleIncrease(itemID, cartData, user)
+                            }
                           />
                           <p>{qty}</p>
                           <AiOutlineMinusSquare
-                            onClick={() => handleDecrease(itemID)}
+                            onClick={() =>
+                              handleOpenModal(itemID, cartData, user, qty)
+                            }
                           />
                         </section>
                       </QtySection>
-                      <Button onClick={() => handleDelete(itemID)}>
+                      <Button
+                        onClick={() => {
+                          setIsModalOpen(true);
+                          setModalProduct(itemID);
+                        }}
+                      >
                         Delete
                       </Button>
                     </div>
@@ -145,12 +111,18 @@ const Cart = () => {
         </MainContainer>
       ) : (
         <NotUserSection>
-        <h1>
-          Go to login page to see your cart
-        </h1>
-          <Link to="/signin"><h5 style={{color:"white"}}>Log In</h5></Link>
+          <h1>Go to login page to see your cart</h1>
+          <Link to="/signin">
+            <h5 style={{ color: "white" }}>Log In</h5>
+          </Link>
         </NotUserSection>
       )}
+      <DeleteFromCart
+        isOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        modalProduct={modalProduct}
+        products={cartData}
+      />
     </>
   );
 };

@@ -31,7 +31,18 @@ export const ModalProductContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 1rem;
+  gap: .5rem;
+  padding: .5rem;
+  background-color: #ecdede;
+  width: clamp(100px, 100%, 150px);
+  border-radius: 4px;
+  p {
+    height: 18px;
+    width: 140px;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+  }
   img {
     width: clamp(100px, 100%, 150px);
     margin: 0.5rem 0;
