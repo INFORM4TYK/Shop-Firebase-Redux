@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const DashboardContainer = styled.section`
     display: flex;
-    align-items:center;
-    justify-content: center;
-    flex-direction: column;
+    align-items:flex-start;
+    justify-content: space-around;
     gap: 2rem;
+    text-align: justify;
 `

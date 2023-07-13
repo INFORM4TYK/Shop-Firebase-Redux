@@ -6,6 +6,8 @@ import { DashboardContainer } from "./DashboardStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/AuthSlice";
 import { clearCart } from "../../store/CartSlice";
+import UserProfil from "./userProfil/UserProfil";
+import AccDetails from "./accDetails/AccDetails";
 const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,12 +25,16 @@ const Dashboard = () => {
       });
   };
   return (
+    // <DashboardContainer>
+    //   <div>{user && user}</div>
+    //   <Link to="/add-products">
+    //     <Button>Add Products</Button>
+    //   </Link>
+    //   <Button onClick={handleLogout}>Logout</Button>
+    // </DashboardContainer>
     <DashboardContainer>
-      <div>{user && user}</div>
-      <Link to="/add-products">
-        <Button>Add Products</Button>
-      </Link>
-      <Button onClick={handleLogout}>Logout</Button>
+      <UserProfil/>
+      <AccDetails/>
     </DashboardContainer>
   );
 };
