@@ -6,4 +6,8 @@ export const DashboardContainer = styled.section`
     justify-content: space-around;
     gap: 2rem;
     text-align: justify;
+  
+    flex-direction: column;
+    align-items: center;
+  
 `

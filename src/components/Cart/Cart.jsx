@@ -27,7 +27,7 @@ const Cart = () => {
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalProduct, setModalProduct] = useState([]);
   const handleOpenModal = (itemID, cartData, user, qty) => {

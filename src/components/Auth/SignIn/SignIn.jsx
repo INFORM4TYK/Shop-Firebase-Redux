@@ -29,8 +29,14 @@ const SignIn = () => {
         getDoc(doc(fs, "user", user.uid))
         .then((snapshot) => {
           if (snapshot.exists()) {
-            const fullName = snapshot.data().FullName;
-              dispatch(login({ user, fullName }));
+            const fullName = snapshot.data().fullName;
+            const date = snapshot.data().dateOfBirth;
+            const description = snapshot.data().description;
+            const createDate = snapshot.data().CreateDate;
+            const email = snapshot.data().email;
+            const uid = user.uid
+            const token = user.accessToken;
+              dispatch(login({ token,uid,email, fullName,date, description,createDate}));
             } 
           })
           .catch((error) => {

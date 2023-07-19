@@ -5,17 +5,21 @@ export const ProfilContainer = styled.section`
   box-shadow: 0px 0px 20px -9px var(--color-darker-white);
   border-radius: 4px;
   display: flex;
-  align-items: center;
   justify-content: flex-start;
-  flex-direction: column;
+  flex-direction: row;
+  width: calc(100% - 10%);
   padding: 2rem 1rem;
-  gap: 2rem;
-  width: 25%;
+  & > * {
+    margin-left: 1rem;
+  }
+  @media screen and (max-width: 560px) {
+    flex-direction: column;
+  }
 `;
 export const ProfilImage = styled.div`
   border-radius: 50%;
-  width: 7rem;
-  height: 7rem;
+  min-width: 7rem;
+  min-height: 7rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,8 +28,23 @@ export const ProfilImage = styled.div`
   background-size: cover;
 `;
 export const UserData = styled.section`
-  text-align: center;
   display: flex;
   gap: 0.7rem;
+  justify-content: center;
   flex-direction: column;
+  align-items: center;
+  border-right: 1px solid black;
+  padding-right: 1rem;
 `;
+export const UserNoDesc = styled.section`
+display: grid;
+place-items: center;
+width: 100%;
+opacity: .5;
+
+`;
+export const UserDesc = styled.section`
+  display: flex;
+  padding: 1rem 0;
+
+`

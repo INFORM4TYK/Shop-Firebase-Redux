@@ -15,7 +15,9 @@ const SignUp = () => {
   const fullNameRef = useRef();
   const confirmPasswordRef = useRef();
   const [successMsg, setSuccessMsg] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState("")
+  const currentDate = new Date();
+const date = currentDate.toISOString().substring(0, 10);;
   const handleSignUp = (e) => {
     e.preventDefault();
     createUserWithEmailAndPassword(
@@ -26,15 +28,16 @@ const SignUp = () => {
       .then((credentials) => {
         console.log(credentials);
         setDoc(doc(fs, "user", credentials.user.uid), {
-          FullName: fullNameRef.current.value,
-          Email: emailRef.current.value,
-          Password: passwordRef.current.value,
+          fullName: fullNameRef.current.value,
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+          createData: date,
         })
           .then(() => {
             setSuccessMsg("successfull");
             const fullName = fullNameRef.current.value;
-            const user = credentials
-            dispatch(login({ user, fullName }));
+            const user = credentials;
+            dispatch(login({ user, fullName}));
             navigation("/account");
           })
           .catch((error) => {
@@ -62,12 +65,16 @@ const SignUp = () => {
         <h2>Register</h2>
         <label>
           Full Name
-          <input type="text" ref={fullNameRef} required onChange={handleInputChange}/>
+          <input
+            type="text"
+            ref={fullNameRef}
+            required
+            onChange={handleInputChange}
+          />
         </label>
         <label>
           Email
           <input type="text" ref={emailRef} required />
-          
         </label>
         <label>
           Password
@@ -75,7 +82,7 @@ const SignUp = () => {
         </label>
         <label>
           Confirm Password
-          <input type="password" ref={confirmPasswordRef} required  />
+          <input type="password" ref={confirmPasswordRef} required />
         </label>
         <p>{error && error}</p>
         <p>{successMsg && successMsg}</p>
