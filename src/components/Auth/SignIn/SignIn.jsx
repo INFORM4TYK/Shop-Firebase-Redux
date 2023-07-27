@@ -5,9 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { fs } from "../../../config/firebase";
 import { login } from "../../../store/AuthSlice";
-import { getDoc,doc, } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { auth } from "../../../config/firebase";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const SignIn = () => {
   const passwordRef = useRef();
   const [error, setError] = useState("");
   const [signIn, setSignIn] = useState(false);
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const handleSingIn = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(
@@ -27,20 +27,30 @@ const SignIn = () => {
         setSignIn(true);
         const user = userCredentials.user;
         getDoc(doc(fs, "user", user.uid))
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            const fullName = snapshot.data().fullName;
-            const date = snapshot.data().dateOfBirth;
-            const description = snapshot.data().description;
-            const createDate = snapshot.data().CreateDate;
-            const email = snapshot.data().email;
-            const uid = user.uid
-            const token = user.accessToken;
-              dispatch(login({ token,uid,email, fullName,date, description,createDate}));
-            } 
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              const fullName = snapshot.data().fullName;
+              const date = snapshot.data().date;
+              const description = snapshot.data().description;
+              const createDate = snapshot.data().createDate;
+              const email = snapshot.data().email;
+              // const avatarUrl = snapshot.data().avatarUrl;
+              const uid = user.uid;
+              dispatch(
+                login({
+                  // avatarUrl,
+                  uid,
+                  email,
+                  fullName,
+                  date,
+                  description,
+                  createDate,
+                })
+              );
+            }
           })
           .catch((error) => {
-            console.log("Błąd pobierania danych użytkownika:", error)
+            console.log("Błąd pobierania danych użytkownika:", error);
           });
       })
       .catch((error) => {
@@ -49,11 +59,11 @@ const SignIn = () => {
       });
   };
   // console.log(signIn);
- useEffect(()=>{
-  if(isLoggedIn){
-    navigate('/')
-  }
- },[isLoggedIn])
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn]);
   return (
     <>
       <Container>

@@ -5,7 +5,7 @@ import { auth, fs } from "../../../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../store/AuthSlice";
 const SignUp = () => {
   const navigation = useNavigate();
@@ -15,9 +15,10 @@ const SignUp = () => {
   const fullNameRef = useRef();
   const confirmPasswordRef = useRef();
   const [successMsg, setSuccessMsg] = useState("");
-  const [error, setError] = useState("")
-  const currentDate = new Date();
-const date = currentDate.toISOString().substring(0, 10);;
+  const [error, setError] = useState("");
+  const date = new Date(); 
+  const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+  console.log(formattedDate)
   const handleSignUp = (e) => {
     e.preventDefault();
     createUserWithEmailAndPassword(
@@ -31,25 +32,40 @@ const date = currentDate.toISOString().substring(0, 10);;
           fullName: fullNameRef.current.value,
           email: emailRef.current.value,
           password: passwordRef.current.value,
-          createData: date,
+          createDate: formattedDate,
+          avatarUrl: "",
+          dateOfBirth: "",
+          description: "",
         })
-          .then(() => {
-            setSuccessMsg("successfull");
-            const fullName = fullNameRef.current.value;
-            const user = credentials;
-            dispatch(login({ user, fullName}));
-            navigation("/account");
-          })
-          .catch((error) => {
-            setError(error.message);
-          });
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-
-    console.log(emailRef.current.value, passwordRef.current.value);
-  };
+        .then(() => {
+          setSuccessMsg("successfull");
+          const fullName = fullNameRef.current.value;
+          const email = emailRef.current.value;
+          const avatarUrl = "";
+          const createDate = formattedDate;
+          const uid =  auth.currentUser.uid;
+          
+          dispatch(
+            login({
+              createDate,
+              avatarUrl,
+              uid,
+              email,
+              fullName,
+              date: "",
+              description: "",
+            })
+          );
+          navigation("/account");
+        })
+        .catch((error) => {
+          setError(error.message);
+        });
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
   const handleInputChange = () => {
     let inputValue = fullNameRef.current.value;
     const words = inputValue.split(" ");

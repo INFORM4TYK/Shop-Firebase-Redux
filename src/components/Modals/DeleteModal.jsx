@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { auth } from "../../config/firebase";
 import {
   ModalContainer,
   Modal,
@@ -11,7 +11,6 @@ import { handleDelete } from "../utils/IncDecCart";
 const DeleteFromCart = ({ isOpen, setIsModalOpen, modalProduct }) => {
   if (!isOpen) return null;
   const { data: cartData } = useSelector((state) => state.cart);
-  const user = useSelector((state) => state.auth.user);
   const filteredProducts = cartData.filter(
     (product) => product.itemID === modalProduct
   );
@@ -38,7 +37,7 @@ const DeleteFromCart = ({ isOpen, setIsModalOpen, modalProduct }) => {
               <ButtonSection>
                 <Button
                   onClick={() => {
-                    handleDelete(itemID, cartData, user);
+                    handleDelete(itemID, cartData, auth.currentUser);
                     setIsModalOpen(false);
                   }}
                 >

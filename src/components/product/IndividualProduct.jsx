@@ -1,4 +1,4 @@
-import { doc,deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import { fs } from "../../config/firebase";
 import {
   ProductContainer,
@@ -15,20 +15,18 @@ const IndividualProduct = ({
   user,
   imageLoaded,
   setImageLoaded,
-  getProducts
+  getProducts,
 }) => {
   const handleImageLoad = () => {
     // setImageLoaded(true);
   };
 
   const handleDelete = async (product) => {
-    console.log(product.id);
-    
     if (user === product.author) {
       const productRef = doc(fs, "Products", product.id);
       deleteDoc(productRef)
         .then(() => {
-          getProducts()
+          getProducts();
           console.log("Delete Product Successfully");
         })
         .catch((error) => {
@@ -38,8 +36,6 @@ const IndividualProduct = ({
       console.log("User is not authorized to delete the product");
     }
   };
-
-  console.log(imageLoaded);
 
   return (
     <ProductContainer>
@@ -63,7 +59,7 @@ const IndividualProduct = ({
                 <p>{price} USD</p>
                 <RowSection>
                   {product.author === user ? (
-                     <Button onClick={() => handleDelete(product)}>
+                    <Button onClick={() => handleDelete(product)}>
                       Delete
                     </Button>
                   ) : (

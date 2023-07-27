@@ -15,8 +15,8 @@ const AddProcucts = () => {
   const [image, setImage] = useState(null);
   const [successMsg, setSuccessMsg] = useState("");
   const [uploadError, setUploadError] = useState("");
-  const [error, setError] = useState("");
-  const types = ["image/png", "image/jpeg", "image/jpg", "image/PNG"];
+  const [error, setError] = useState("");const types = ["image/png", "image/jpeg", "image/jpg", "image/PNG"];
+  
   const handleProductImg = (e) => {
     e.preventDefault();
     let selectFile = e.target.files[0];
@@ -98,7 +98,7 @@ const AddProcucts = () => {
           {uploadError ? <p>{uploadError} </p> : null}
           {error ? <p>{error} </p> : null}
         </AlertSection>
-        <Button type="submit">Add</Button>
+        <Button disabled={image === null} type="submit">Add</Button>
       </FormAddContainer>
     </>
   );

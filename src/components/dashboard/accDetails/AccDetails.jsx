@@ -1,53 +1,66 @@
 import { DetailsContainer, Nav, FormDetails } from "./AccDetailsStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
-import { fs } from "../../../config/firebase";
-import { useEffect } from "react";
+import { auth, fs } from "../../../config/firebase";
 import { useRef } from "react";
 import { updateEmail } from "firebase/auth";
-import { login, updateUser } from "../../../store/AuthSlice";
+import { updateUser } from "../../../store/AuthSlice";
+import { useState, useEffect } from "react";
+import { Button } from "../../product/ProductStyles";
+
 const AccDetails = () => {
   const user = useSelector((state) => state.auth);
-  const email = useSelector((state) => state.auth.email);
-  const date = useSelector((state) => state.auth.date);
-  const uid = useSelector((state) => state.auth.uid);
-  const fullName = useSelector((state) => state.auth.fullName);
-  const token = useSelector((state) => state.auth.token);
+  const { email, date, fullName } = useSelector((state) => state.auth);
   const [firstName, lastName] = fullName.split(" ");
-  console.log(fullName)
+  const [formChanged, setFormChanged] = useState(false);
+  const [alert, setAlert] = useState("");
   const firstRef = useRef();
   const lastRef = useRef();
   const dateRef = useRef();
   const descRef = useRef();
   const emailRef = useRef();
   const dispatch = useDispatch();
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const userRef = doc(fs, "user", uid);
-      const updatedData = {};
-      updatedData.fullName = `${firstRef.current.value || firstName} ${
-        lastRef.current.value || lastName
-      }`;
-      updatedData.email = emailRef.current.value;
-      updatedData.date = dateRef.current.value;
-      updatedData.description = descRef.current.value;
-      await setDoc(userRef, updatedData);
-      // await updateEmail(user, emailRef.current.value);
-      const updatedSnapshot = await getDoc(userRef);
-      const updatedUser = {
-        ...user,
-        ...updatedSnapshot.data(),
-      };
-      console.log(updatedUser);
-      dispatch(updateUser(updatedUser));
-      console.log("Dane zostały zaktualizowane w Firestore!");
-    } catch (error) {
-      console.error("Błąd podczas aktualizowania danych:", error);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formChanged) {
+      setAlert("No changes for submit");
+    } else {
+      try {
+        const userRef = doc(fs, "user", auth.currentUser.uid);
+        const userSnapshot = await getDoc(userRef); 
+        const currentUserData = userSnapshot.data();
+  
+        const updatedData = {
+          ...currentUserData,
+          fullName: `${firstRef.current.value || firstName} ${lastRef.current?.value || lastName}`,
+          email: emailRef.current.value,
+          date: dateRef.current.value,
+          description: descRef.current.value,
+        };
+        dispatch(updateUser(updatedData));
+        await setDoc(userRef, updatedData);
+        await updateEmail(auth.currentUser, emailRef.current?.value); 
+        setFormChanged(false);
+        setAlert("Data updated!");
+      } catch (error) {
+        console.log(error);
+        setAlert("Something went wrong. Try again later");
+      }
     }
+    setTimeout(() => {
+      setAlert("");
+    }, 3000);
   };
-
-  // console.log(user)
+  useEffect(() => {
+    const inputRefs = [firstRef, lastRef, emailRef, dateRef, descRef];
+    const handleInputChange = () => {
+      setFormChanged(true);
+    };
+    inputRefs.forEach((ref) => {
+      ref.current.removeEventListener("input", handleInputChange);
+      ref.current.addEventListener("input", handleInputChange);
+    });
+  }, []);
   return (
     <DetailsContainer>
       <Nav>
@@ -75,11 +88,18 @@ const AccDetails = () => {
           <textarea
             id="desc"
             defaultValue={user.description || null}
+            placeholder="Type your description here..."
             type="text"
             ref={descRef}
+            spellCheck="false"
           />
         </label>
-        <button type="submit">SUBMIT</button>
+        <label>
+          <h3>{alert}</h3>
+        </label>
+        <label>
+          <Button type="submit">Update Details</Button>
+        </label>
       </FormDetails>
     </DetailsContainer>
   );

@@ -132,12 +132,11 @@ export const Button = styled.button`
   border-radius: 5px;
   border-style: none;
   box-sizing: border-box;
-  color: #ffffff;
+  color: var(--sec-color);
   display: inline-block;
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
-    sans-serif;
+  font-family: var(--ff-main);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   height: 40px;
   margin: 0;
   outline: none;
@@ -153,6 +152,7 @@ export const Button = styled.button`
     width: 100%;
   }
   &:hover,&:active {
+    color: var(--main-color);
     background-color: var(--text-dark);
   }
 `;
