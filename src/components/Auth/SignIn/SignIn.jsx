@@ -34,11 +34,11 @@ const SignIn = () => {
               const description = snapshot.data().description;
               const createDate = snapshot.data().createDate;
               const email = snapshot.data().email;
-              // const avatarUrl = snapshot.data().avatarUrl;
+              const avatarUrl = snapshot.data().avatarUrl;
               const uid = user.uid;
               dispatch(
                 login({
-                  // avatarUrl,
+                  avatarUrl,
                   uid,
                   email,
                   fullName,
@@ -50,7 +50,7 @@ const SignIn = () => {
             }
           })
           .catch((error) => {
-            console.log("Błąd pobierania danych użytkownika:", error);
+            console.log("Something went wrong:", error);
           });
       })
       .catch((error) => {

@@ -27,19 +27,21 @@ const AccDetails = () => {
     } else {
       try {
         const userRef = doc(fs, "user", auth.currentUser.uid);
-        const userSnapshot = await getDoc(userRef); 
+        const userSnapshot = await getDoc(userRef);
         const currentUserData = userSnapshot.data();
-  
+
         const updatedData = {
           ...currentUserData,
-          fullName: `${firstRef.current.value || firstName} ${lastRef.current?.value || lastName}`,
+          fullName: `${firstRef.current.value || firstName} ${
+            lastRef.current?.value || lastName
+          }`,
           email: emailRef.current.value,
           date: dateRef.current.value,
           description: descRef.current.value,
         };
         dispatch(updateUser(updatedData));
         await setDoc(userRef, updatedData);
-        await updateEmail(auth.currentUser, emailRef.current?.value); 
+        await updateEmail(auth.currentUser, emailRef.current?.value);
         setFormChanged(false);
         setAlert("Data updated!");
       } catch (error) {

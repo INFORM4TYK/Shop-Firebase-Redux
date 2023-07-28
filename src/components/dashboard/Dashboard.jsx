@@ -1,31 +1,18 @@
-import { auth } from "../../config/firebase";
-import { useNavigate } from "react-router-dom";
-import { DashboardContainer } from "./DashboardStyles";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../store/AuthSlice";
-import { clearCart } from "../../store/CartSlice";
+import { DashboardContainer, AlertSection } from "./DashboardStyles";
 import UserProfil from "./userProfil/UserProfil";
 import AccDetails from "./accDetails/AccDetails";
+import { useState } from "react";
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.fullName);
-  const handleLogout = () => {
-    auth
-      .signOut()
-      .then(() => {
-        navigate("/signin");
-        dispatch(logout(user));
-        dispatch(clearCart());
-      })
-      .catch((error) => {
-        console.log("Logout errro:", error);
-      });
-  };
+  const [message, setMessage] = useState("");
   return (
     <DashboardContainer>
-      <UserProfil/>
-      <AccDetails/>
+      <UserProfil setMessage={setMessage} />
+      {message && (
+        <AlertSection>
+          <p>{message}</p>
+        </AlertSection>
+      )}
+      <AccDetails setMessage={setMessage} />
     </DashboardContainer>
   );
 };

@@ -47,7 +47,22 @@ const Navbar = () => {
             <AiOutlineShoppingCart />
             <p>{totalQty}</p>
           </Link>
-          {user && <Button onClick={() => resetState()}>Log Out</Button>}
+          {user && (
+            <>
+              <Button onClick={() => resetState()}>Log Out</Button>
+              <Link to="/add-products">
+              <Button 
+                style={{
+                  backgroundColor: "var(--sec-color)",
+                  border: "1px solid var(--main-color)",
+                  color: "var(--main-color)",
+                }}
+              >
+                Add Product
+              </Button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </Nav>

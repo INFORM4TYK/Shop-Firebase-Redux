@@ -11,6 +11,9 @@ export const ProfilContainer = styled.section`
   padding: 2rem 1rem;
   max-width: 90%;
   min-width: 500px;
+  button {
+    max-height: 30px;
+  }
   & > * {
     margin-left: 1rem;
   }
@@ -44,7 +47,8 @@ export const ProfilImage = styled.div`
     cursor: pointer;
     opacity: 0;
     width: 100%;
-    height: 100%;
+    min-height: 7rem;
+    max-height: 7rem;
     border-radius: 50%;
   }
 `;
@@ -66,8 +70,8 @@ export const UserData = styled.section`
     display: flex;
     gap: 2rem;
   }
-  label{
-    margin: 1rem ;
+  label {
+    margin: 1rem;
   }
   @media screen and (max-width: 700px) {
     border-right: none;
@@ -88,4 +92,11 @@ export const UserDesc = styled.section`
   @media screen and (max-width: 900px) {
     font-size: var(--fs-small);
   }
+`;
+export const ImageSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  gap: 0.2rem;
+  
 `;

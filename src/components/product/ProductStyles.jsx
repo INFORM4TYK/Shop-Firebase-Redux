@@ -73,10 +73,10 @@ export const ProductContainer = styled.section`
   justify-content: flex-start;
   flex-wrap: wrap;
   img {
-    width: clamp(100px, 100%, 150px);
+    width: clamp(150px, 100%, 200px);
     margin: 0.5rem 0;
     aspect-ratio: 1/1;
-    max-height: 150px;
+    max-height: 170px;
     mix-blend-mode: multiply;
   }
   @media (max-width: 580px) {
@@ -96,16 +96,17 @@ export const ProductCard = styled.article`
   overflow: hidden;
   margin: 2rem 1rem;
   padding: 1rem;
-  height: 400px;
+  height: 450px;
   min-width: calc((100% - 8rem) / 4);
   max-width: calc((100% - 8rem) / 4);
   font-size: var(--fs-small);
   p {
     height: 18px;
-    width: 140px;
+    width: 200px;
     overflow: hidden;
     text-align: center;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
   div:nth-child(2) {
     display: flex;

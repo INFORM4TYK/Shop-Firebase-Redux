@@ -87,7 +87,7 @@ const AddProcucts = () => {
         </label>
         <label>
           Product Price
-          <input type="number" ref={priceRef} required />
+          <input type="number" ref={priceRef} required  step="0.01" />
         </label>
         <label>
           Upload Product Image
