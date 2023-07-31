@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Button, FormAddContainer, AlertSection } from "./ProductStyles";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
-import { fs } from "../../config/firebase";
+import { auth, fs } from "../../config/firebase";
 import { storage } from "../../config/firebase";
 import { useSelector } from "react-redux";
 const AddProcucts = () => {
@@ -60,6 +60,7 @@ const AddProcucts = () => {
         description,
         price: Number(price),
         url: downloadURL,
+        uid: auth.currentUser.uid
       });
       setSuccessMsg("Product added successfully");
       titleRef.current.value = "";

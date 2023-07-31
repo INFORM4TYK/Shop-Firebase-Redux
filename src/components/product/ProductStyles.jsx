@@ -20,6 +20,7 @@ export const FormAddContainer = styled.form`
   gap: 1rem;
   width: 100%;
   padding: 0 10%;
+  height: calc(100vh - 100px);
   h1 {
     font-size: var(--fs-big);
     color: var(--color-white);

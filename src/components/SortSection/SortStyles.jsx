@@ -3,7 +3,7 @@ export const SortSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  margin: 1rem 1rem 0 1rem;
+  margin: 2rem 1rem 0 1rem;
   gap: clamp(0.2rem, 2vw, 2rem);
   button {
     padding: 0.1rem;

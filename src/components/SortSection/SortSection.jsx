@@ -20,7 +20,6 @@ const Sort = ({
   setProductStatus,
 }) => {
   const navigate = useNavigate();
-
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
@@ -51,7 +50,7 @@ const Sort = ({
     const maxPriceValue = parseInt(maxPrice);
 
     const filteredProducts = originalProducts.filter((product) => {
-      if(showMyProducts) {
+      if (showMyProducts) {
         if (maxPriceValue && minPriceValue) {
           return (
             product.price >= minPriceValue &&
@@ -64,7 +63,7 @@ const Sort = ({
           return product.price >= minPriceValue && product.author === user;
         }
         return true;
-      }else{
+      } else {
         if (maxPriceValue && minPriceValue) {
           return (
             product.price >= minPriceValue &&
@@ -78,7 +77,6 @@ const Sort = ({
         }
         return true;
       }
-      
     });
     setProducts(
       filteredProducts.length > 0 ? filteredProducts : originalProducts
@@ -92,16 +90,20 @@ const Sort = ({
     const userProducts = Object.values(originalProducts).filter(
       (product) => product.author === user
     );
-    if(showMyProducts)
-    setProducts(userProducts);
-    else
-    setProducts(originalProducts);
+    if (showMyProducts) setProducts(userProducts);
+    else setProducts(originalProducts);
   };
   const sortProductsByPrice = (direction) => {
-    const productsArray = Object.values(originalProducts);
-    productsArray.sort((a, b) => direction === "asc" ? a.price - b.price : b.price - a.price);
+    let productsArray = Object.values(originalProducts);
+    if (showMyProducts) {
+      productsArray = productsArray.filter(
+        (product) => product.author === user
+      );
+    }
+    productsArray.sort((a, b) =>
+      direction === "asc" ? a.price - b.price : b.price - a.price
+    );
     setProducts(productsArray);
-    setShowMyProducts(false)
   };
   return (
     <SortSection>
@@ -116,7 +118,9 @@ const Sort = ({
         <Button onClick={() => sortProductsByPrice("asc")}>Lowest Price</Button>
       </RangeSection>
       <RangeSection>
-        <Button onClick={() => sortProductsByPrice("desc")}>Highest Price</Button>
+        <Button onClick={() => sortProductsByPrice("desc")}>
+          Highest Price
+        </Button>
       </RangeSection>
       <RangeSection>
         <Button onClick={() => setRange(!range)}>

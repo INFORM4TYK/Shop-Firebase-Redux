@@ -4,17 +4,15 @@ export const Nav = styled.nav`
   width: 100%;
   text-align: center;
   font-size: var(--fs-big);
-  padding: 2.5rem;
+  padding: 1.5rem 2rem;
   box-sizing: border-box;
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  background-color: #159a9c11;
   button{
     color: var(--sec-color)
-  }
-  button:hover{
-    color: var(--main-color)
   }
   a:nth-child(2) {
     margin-left: 1rem;

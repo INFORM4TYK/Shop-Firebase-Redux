@@ -1,12 +1,21 @@
 import { DetailsContainer, Nav, FormDetails } from "./AccDetailsStyles";
 import { useDispatch, useSelector } from "react-redux";
-import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
 import { auth, fs } from "../../../config/firebase";
 import { useRef } from "react";
 import { updateEmail } from "firebase/auth";
 import { updateUser } from "../../../store/AuthSlice";
 import { useState, useEffect } from "react";
 import { Button } from "../../product/ProductStyles";
+import {
+  doc,
+  collection,
+  updateDoc,
+  getDocs,
+  query,
+  where,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
 
 const AccDetails = () => {
   const user = useSelector((state) => state.auth);
@@ -26,7 +35,7 @@ const AccDetails = () => {
       setAlert("No changes for submit");
     } else {
       try {
-        const userRef = doc(fs, "user", auth.currentUser.uid);
+        const userRef = doc(collection(fs, "user"), auth.currentUser.uid);
         const userSnapshot = await getDoc(userRef);
         const currentUserData = userSnapshot.data();
 
@@ -39,9 +48,20 @@ const AccDetails = () => {
           date: dateRef.current.value,
           description: descRef.current.value,
         };
-        dispatch(updateUser(updatedData));
+
+        const productRef = collection(fs, "Products");
+        const productsSnapshot = await getDocs(
+          query(productRef, where('uid', '==', auth.currentUser.uid))
+        );
+        productsSnapshot.forEach(async (docSnap) => {
+          const productDocRef = doc(productRef, docSnap.id);
+          await updateDoc(productDocRef, { author: updatedData.fullName }); 
+        });
         await setDoc(userRef, updatedData);
+
         await updateEmail(auth.currentUser, emailRef.current?.value);
+
+        dispatch(updateUser(updatedData));
         setFormChanged(false);
         setAlert("Data updated!");
       } catch (error) {

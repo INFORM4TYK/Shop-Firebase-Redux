@@ -9,6 +9,7 @@ export const DashboardContainer = styled.section`
   flex-direction: column;
   align-items: center;
   transform: all 1s ease;
+  margin-top: 2rem;
 `;
 export const AlertSection = styled.section`
   & > * {

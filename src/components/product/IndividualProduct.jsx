@@ -1,5 +1,5 @@
 import { doc, deleteDoc } from "firebase/firestore";
-import { fs } from "../../config/firebase";
+import { auth, fs } from "../../config/firebase";
 import {
   ProductContainer,
   ProductCard,
@@ -16,16 +16,17 @@ const IndividualProduct = ({
   imageLoaded,
   setImageLoaded,
   getProducts,
+  setShowMyPorducts
 }) => {
   const handleImageLoad = () => {
     // setImageLoaded(true);
   };
-
   const handleDelete = async (product) => {
     if (user === product.author) {
       const productRef = doc(fs, "Products", product.id);
       deleteDoc(productRef)
         .then(() => {
+          setShowMyPorducts(false)
           getProducts();
           console.log("Delete Product Successfully");
         })
@@ -36,7 +37,6 @@ const IndividualProduct = ({
       console.log("User is not authorized to delete the product");
     }
   };
-
   return (
     <ProductContainer>
       {!error &&
@@ -58,10 +58,16 @@ const IndividualProduct = ({
                 <p>{description}</p>
                 <p>{price} USD</p>
                 <RowSection>
-                  {product.author === user ? (
-                    <Button onClick={() => handleDelete(product)}>
-                      Delete
-                    </Button>
+                  {auth.currentUser ? (
+                    product.uid === auth.currentUser.uid ? (
+                      <Button onClick={() => handleDelete(product)}>
+                        Delete
+                      </Button>
+                    ) : (
+                      <Button onClick={() => handleAddToCart(product, uid)}>
+                        Add To Cart
+                      </Button>
+                    )
                   ) : (
                     <Button onClick={() => handleAddToCart(product, uid)}>
                       Add To Cart
@@ -70,7 +76,7 @@ const IndividualProduct = ({
                 </RowSection>
                 <RowSection>
                   <h4>
-                    {author === user
+                    {auth.currentUser && product.uid === auth.currentUser.uid
                       ? "Its Your Product"
                       : author
                       ? `Seller: ${author}`

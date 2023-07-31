@@ -52,6 +52,7 @@ const Home = () => {
         getProducts={getProducts}
         imageLoaded={imageLoaded}
         setProductStatus={setProductStatus}
+        setShowMyProducts={setShowMyProducts}
         user={user}
         products={products}
         showMyProducts={showMyProducts}

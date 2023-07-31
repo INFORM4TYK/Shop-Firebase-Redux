@@ -21,6 +21,7 @@ const Products = ({
   user,
   imageLoaded,
   getProducts,
+  setShowMyProducts
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -147,6 +148,7 @@ const Products = ({
         error={error}
         products={products}
         imageLoaded={imageLoaded}
+        setShowMyPorducts={setShowMyProducts}
         setImageLoaded={setImageLoaded}
         // handleImageLoad={handleImageLoad}
         uid={uid}

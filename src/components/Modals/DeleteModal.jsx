@@ -8,7 +8,6 @@ import {
 import { Button } from "../product/ProductStyles";
 import { useSelector } from "react-redux";
 import { handleDelete } from "../utils/IncDecCart";
-import { useEffect } from "react";
 const DeleteFromCart = ({ isOpen, setIsModalOpen, modalProduct }) => {
   if (!isOpen) return null;
   const { data: cartData } = useSelector((state) => state.cart);
