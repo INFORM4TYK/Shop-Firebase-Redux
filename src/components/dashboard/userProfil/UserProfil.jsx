@@ -7,6 +7,7 @@ import { Button } from "../../product/ProductStyles";
 import { MdDoneOutline } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { sendEmailVerification } from "firebase/auth";
+import defaultAvatar from "../../../assets/images/Avatar.png";
 import {
   getStorage,
   ref,
@@ -21,8 +22,9 @@ import {
   UserDesc,
   ImageSection,
 } from "./UserProfilStyles";
-import defaultAvatar from "../../../../images/Avatar.png";
+
 const UserProfil = ({ setMessage }) => {
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
   let verified = auth.currentUser.emailVerified;
