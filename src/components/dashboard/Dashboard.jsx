@@ -7,11 +7,7 @@ const Dashboard = () => {
   return (
     <DashboardContainer>
       <UserProfil setMessage={setMessage} />
-      {message && (
-        <AlertSection>
-          <p>{message}</p>
-        </AlertSection>
-      )}
+      {message && <AlertSection message={message}><p>{message}</p></AlertSection>}
       <AccDetails setMessage={setMessage} />
     </DashboardContainer>
   );

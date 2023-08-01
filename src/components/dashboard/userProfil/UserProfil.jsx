@@ -24,7 +24,6 @@ import {
 } from "./UserProfilStyles";
 
 const UserProfil = ({ setMessage }) => {
-
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
   let verified = auth.currentUser.emailVerified;
@@ -96,7 +95,7 @@ const UserProfil = ({ setMessage }) => {
     }
   };
   const handleVerifyEmail = () => {
-    if(!verified){
+    if (!verified) {
       sendEmailVerification(auth.currentUser)
         .then(() => {
           setMessage("Verification has been sent to your e-mail");
@@ -104,8 +103,8 @@ const UserProfil = ({ setMessage }) => {
         .catch((error) => {
           console.error(error);
         });
-    }else{
-      setMessage("E-mail already verified")
+    } else {
+      setMessage("E-mail already verified");
     }
     clearMesage();
   };
@@ -167,12 +166,14 @@ const UserProfil = ({ setMessage }) => {
                     <IoMdClose style={{ color: "red" }} />
                   )}
                 </div>
-                <Button
-                  onClick={handleVerifyEmail}
-                  style={{ marginTop: ".5rem" }}
-                >
-                  Verify Email
-                </Button>
+                {!verified && (
+                  <Button
+                    onClick={handleVerifyEmail}
+                    style={{ marginTop: ".5rem" }}
+                  >
+                    Verify Email
+                  </Button>
+                )}
               </label>
             </aside>
           </section>

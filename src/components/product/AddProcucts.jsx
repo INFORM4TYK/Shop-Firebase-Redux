@@ -32,46 +32,52 @@ const AddProcucts = () => {
       return null;
     }
   };
+ 
   const handleAddProducts = async (e) => {
     e.preventDefault();
-    const title = titleRef.current.value;
-    const description = descRef.current.value;
-    const price = priceRef.current.value;
-    const author = user;
-    try {
-      const storageRef = ref(storage, `product-images/${image.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, image);
-      uploadTask.on("state_changed", (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      });
-      await new Promise((resolve, reject) => {
-        uploadTask.on("state_changed", {
-          error: (error) => reject(error),
-          complete: resolve,
+    if(auth.currentUser.emailVerified){
+
+      const title = titleRef.current.value;
+      const description = descRef.current.value;
+      const price = priceRef.current.value;
+      const author = user;
+      try {
+        const storageRef = ref(storage, `product-images/${image.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, image);
+        uploadTask.on("state_changed", (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         });
-      });
-
-      const downloadURL = await getDownloadURL(storageRef);
-
-      await addDoc(collection(fs, "Products"), {
-        author,
-        title,
-        description,
-        price: Number(price),
-        url: downloadURL,
-        uid: auth.currentUser.uid
-      });
-      setSuccessMsg("Product added successfully");
-      titleRef.current.value = "";
-      descRef.current.value = "";
-      priceRef.current.value = "";
-      fileInputRef.current.value = "";
-      setTimeout(() => {
-        setSuccessMsg("");
-      }, 3000);
-    } catch (err) {
-      setError(err);
+        await new Promise((resolve, reject) => {
+          uploadTask.on("state_changed", {
+            error: (error) => reject(error),
+            complete: resolve,
+          });
+        });
+  
+        const downloadURL = await getDownloadURL(storageRef);
+  
+        await addDoc(collection(fs, "Products"), {
+          author,
+          title,
+          description,
+          price: Number(price),
+          url: downloadURL,
+          uid: auth.currentUser.uid
+        });
+        setSuccessMsg("Product added successfully");
+        titleRef.current.value = "";
+        descRef.current.value = "";
+        priceRef.current.value = "";
+        fileInputRef.current.value = "";
+        setTimeout(() => {
+          setSuccessMsg("");
+        }, 3000);
+      } catch (err) {
+        setError(err);
+      }
+    }else{
+      setSuccessMsg("Your account must be verified to add the product")
     }
   };
   return (
