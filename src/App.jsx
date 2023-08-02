@@ -10,10 +10,11 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import Home from "./components/Home/Home";
 import { Analytics } from '@vercel/analytics/react';
+ 
 function App() {
   return (
     <>
-     <Analytics>
+    <Analytics />
       <BrowserRouter>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
@@ -29,8 +30,7 @@ function App() {
           </PersistGate>
         </Provider>
       </BrowserRouter>
-      </Analytics>
-    </>
+  </>
   );
 }
 
