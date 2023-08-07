@@ -53,7 +53,7 @@ const Cart = () => {
             ) : (
               <>
                 <h2>
-                  ALL COST <p>{totalCost}&nbsp;USD </p>
+                  ALL COST <p>{totalCost.toFixed(2)}&nbsp;USD </p>
                 </h2>
                 <Button>Buy</Button>
               </>
@@ -77,7 +77,7 @@ const Cart = () => {
                     <div>
                       <section>
                         <b>Total cost:</b>
-                        <p>{TotalProductPrice}&nbsp;USD</p>
+                        <p>{TotalProductPrice.toFixed(2)}&nbsp;USD</p>
                       </section>
                       <QtySection>
                         <b>Amount:</b>
